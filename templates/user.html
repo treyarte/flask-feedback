@@ -1,0 +1,50 @@
+{%extends 'base.html'%}{%block title%}{{user.username}}{%endblock%}{%block
+content%}
+<div class="container mt-4">
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">{{user.username}}</h5>
+      {%if session["username"] == user.username%}
+      <form action="/users/{{user.username}}/delete" method="post">
+        <button class="btn btn-sm btn-danger">Delete</button>
+      </form>
+      {%endif%}
+      <ul>
+        <li>
+          Email: {{user.email}}
+        </li>
+        <li>
+          First Name: {{user.first_name}}
+        </li>
+        <li>
+          Last Name: {{user.last_name}}
+        </li>
+      </ul>
+      <h6 class="card-subtitle text-muted">Feedback</h6>
+      <ul>
+        {%if user.feedback%} {%for f in user.feedback%}
+        <li>
+          <h6>
+            {{f.title}}
+          </h6>
+          <p>
+            {{f.content}}
+          </p>
+          {%if user.username == session["username"]%}
+          <a href="/feedback/{{f.id}}/update" class="btn btn-info">Edit</a>
+          <form action="/feedback/{{f.id}}/delete" method="post">
+            <button class="btn btn-danger">Delete</button>
+          </form>
+          {%endif%}
+        </li>
+        {%endfor%} {%endif%}
+      </ul>
+      <a
+        href="/users/{{session['username']}}/feedback/add"
+        class="btn btn-primary"
+        >Add Feedback</a
+      >
+    </div>
+  </div>
+</div>
+{%endblock%}
